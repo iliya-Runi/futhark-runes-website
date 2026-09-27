@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта судьбы по 22 арканам | Рассчитать онлайн</title>
+    <meta name="description" content="Рассчитайте свою карту судьбы на основе 22 арканов Таро по дате рождения. Онлайн-калькулятор с расшифровкой арканов.">
+    <meta name="yandex-verification" content="9a16faae25fe3149" />
+
+    <!-- ===== FAVICON: РУНА АНСУЗ В КРУГЕ ===== -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%23c9a050' stroke-width='3'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%23c9a050' font-weight='bold' font-family='serif'>ᚨ</text></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== ОБЩИЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0d1a;
+            color: #b8ab9a;
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 25px 40px;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+            padding: 20px 0 25px;
+            border-bottom: 1px solid rgba(201, 160, 80, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #c9a050;
+            letter-spacing: 6px;
+            text-align: right;
+            align-self: flex-start;
+            width: 100%;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 11px;
+            color: #6a5f50;
+            letter-spacing: 3px;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 16px;
+            width: 100%;
+        }
+
+        .nav-row-left { justify-content: flex-start; }
+        .nav-row-right { justify-content: flex-end; }
+
+        nav a {
+            color: #b8ab9a;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1.2px;
+            transition: 0.3s;
+            border-bottom: 2px solid transparent;
+            padding: 6px 10px 4px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #c9a050;
+            border-bottom-color: #c9a050;
+        }
+
+        .support-link {
+            color: #c9a050 !important;
+            border-bottom-color: rgba(201, 160, 80, 0.3) !important;
+        }
+
+        /* ===== ЗАГОЛОВОК СТРАНИЦЫ ===== */
+        .page-hero {
+            text-align: center;
+            padding: 40px 20px 45px;
+            background: linear-gradient(180deg, rgba(201, 160, 80, 0.05) 0%, transparent 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(201, 160, 80, 0.1);
+        }
+
+        .page-hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            color: #c9a050;
+            text-shadow: 0 0 30px rgba(201, 160, 80, 0.2);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .page-hero .subtitle {
+            font-size: 17px;
+            color: #b8ab9a;
+            max-width: 680px;
+            margin: 0 auto;
+            letter-spacing: 1px;
+            line-height: 1.8;
+        }
+
+        /* ===== ФОРМА РАСЧЁТА ===== */
+        .calc-box {
+            background: rgba(20, 20, 35, 0.6);
+            border: 1px solid rgba(201, 160, 80, 0.12);
+            border-radius: 20px;
+            padding: 40px 35px;
+            margin-bottom: 45px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-box h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: #c9a050;
+            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #8a7a6a;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+
+        .form-group input,
+        .form-group select {
+            background: rgba(13, 13, 26, 0.8);
+            border: 1px solid rgba(201, 160, 80, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #e8ddd0;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            transition: 0.3s;
+            min-width: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #c9a050;
+            box-shadow: 0 0 20px rgba(201, 160, 80, 0.1);
+        }
+
+        .calc-btn {
+            background: rgba(201, 160, 80, 0.1);
+            border: 1px solid rgba(201, 160, 80, 0.3);
+            color: #c9a050;
+            padding: 13px 40px;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .calc-btn:hover {
+            background: rgba(201, 160, 80, 0.2);
+            border-color: #c9a050;
+            box-shadow: 0 0 30px rgba(201, 160, 80, 0.15);
+        }
+
+        /* ===== РЕЗУЛЬТАТЫ ===== */
+        .results {
+            display: none;
+        }
+
+        .results.visible {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-title {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 26px;
+            color: #c9a050;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        .results-date {
+            text-align: center;
+            color: #6a5f50;
+            font-size: 15px;
+            margin-bottom: 35px;
+            letter-spacing: 2px;
+        }
+
+        /* ===== СЕТКА И КАРТОЧКИ ===== */
+        .arcana-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .arcana-card {
+            background: rgba(30, 30, 50, 0.6);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(201, 160, 80, 0.12);
+            border-radius: 18px;
+            padding: 32px 28px;
+            text-align: center;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .arcana-card:hover {
+            transform: translateY(-5px);
+            border-color: #c9a050;
+            box-shadow: 0 15px 40px rgba(201, 160, 80, 0.12);
+        }
+
+        .arcana-card .position {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            color: #6a5f50;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .arcana-card .number {
+            font-family: 'Cinzel', serif;
+            font-size: 52px;
+            color: #c9a050;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 0 25px rgba(201, 160, 80, 0.2);
+        }
+
+        .arcana-card .name {
+            font-size: 22px;
+            color: #e8ddd0;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .arcana-card .desc {
+            font-size: 15px;
+            color: #a89988;
+            line-height: 1.7;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        /* ===== РАСКРЫТАЯ КАРТОЧКА ===== */
+        .arcana-card.expanded {
+            grid-column: 1 / -1;
+            text-align: left;
+            padding: 40px 45px;
+        }
+
+        .arcana-card.expanded .number,
+        .arcana-card.expanded .name,
+        .arcana-card.expanded .desc {
+            text-align: center;
+        }
+
+        .arcana-card.expanded .desc {
+            max-width: 700px;
+            margin: 0 auto 20px;
+            font-size: 16px;
+        }
+
+        /* ===== ДЕТАЛИ АРКАНА ===== */
+        .arcana-card .details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease, opacity 0.4s ease, margin 0.4s ease;
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        .arcana-card.expanded .details {
+            max-height: 3000px;
+            opacity: 1;
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(201, 160, 80, 0.15);
+        }
+
+        .detail-block {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .detail-label {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            color: #c9a050;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .detail-text {
+            font-size: 15px;
+            color: #b8ab9a;
+            line-height: 1.85;
+        }
+
+        .detail-block.advice {
+            background: rgba(201, 160, 80, 0.05);
+            border-left: 3px solid #c9a050;
+            padding: 16px 20px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 24px;
+        }
+
+        .detail-block.advice .detail-text {
+            color: #d4c9b8;
+            font-style: italic;
+            font-size: 15px;
+        }
+
+        .toggle-hint {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6a5f50;
+            letter-spacing: 2.5px;
+            font-family: 'Cinzel', serif;
+            transition: 0.3s;
+        }
+
+        .arcana-card:hover .toggle-hint {
+            color: #c9a050;
+        }
+
+        /* ===== ЦЕНТРАЛЬНЫЙ АРКАН ===== */
+        .central-arcana {
+            background: linear-gradient(135deg, rgba(201, 160, 80, 0.08) 0%, rgba(30, 30, 50, 0.8) 100%);
+            border: 1px solid rgba(201, 160, 80, 0.3);
+            border-radius: 20px;
+            padding: 55px 45px 50px;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .central-arcana::before {
+            content: '✦';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            color: rgba(201, 160, 80, 0.1);
+            font-size: 40px;
+        }
+
+        .central-arcana::after {
+            content: '✦';
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            color: rgba(201, 160, 80, 0.1);
+            font-size: 40px;
+        }
+
+        .central-arcana .label {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: #6a5f50;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .central-arcana .number {
+            font-family: 'Cinzel', serif;
+            font-size: 72px;
+            color: #c9a050;
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(201, 160, 80, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .central-arcana .name {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: #e8ddd0;
+            letter-spacing: 4px;
+            margin-bottom: 18px;
+        }
+
+        .central-arcana .central-short {
+            font-size: 18px;
+            color: #c9a050;
+            letter-spacing: 2px;
+            line-height: 1.7;
+            max-width: 720px;
+            margin: 0 auto 35px;
+            font-style: italic;
+            font-family: 'Cinzel', serif;
+        }
+
+        .central-arcana .central-divider {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(201, 160, 80, 0.4), transparent);
+            margin: 0 auto 40px;
+        }
+
+        .central-arcana .central-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .central-arcana .central-block {
+            background: rgba(13, 13, 26, 0.4);
+            border: 1px solid rgba(201, 160, 80, 0.1);
+            border-radius: 14px;
+            padding: 22px 24px;
+            transition: 0.3s;
+        }
+
+        .central-arcana .central-block:hover {
+            border-color: rgba(201, 160, 80, 0.3);
+            background: rgba(13, 13, 26, 0.6);
+        }
+
+        .central-arcana .central-block.wide {
+            grid-column: 1 / -1;
+        }
+
+        .central-arcana .central-label {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            color: #c9a050;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .central-arcana .central-label::before {
+            content: '✦';
+            color: rgba(201, 160, 80, 0.5);
+            font-size: 10px;
+        }
+
+        .central-arcana .central-text {
+            font-size: 15px;
+            color: #b8ab9a;
+            line-height: 1.85;
+        }
+
+        .central-arcana .central-block.pros .central-text {
+            color: #c9b88a;
+        }
+
+        .central-arcana .central-block.cons .central-text {
+            color: #a89080;
+        }
+
+        .central-arcana .central-block.advice {
+            background: linear-gradient(135deg, rgba(201, 160, 80, 0.08) 0%, rgba(13, 13, 26, 0.5) 100%);
+            border: 1px solid rgba(201, 160, 80, 0.25);
+        }
+
+        .central-arcana .central-block.advice .central-text {
+            color: #e8ddd0;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.9;
+        }
+
+        .central-arcana .central-mantra {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 20px;
+            padding: 25px 20px;
+            border-top: 1px solid rgba(201, 160, 80, 0.12);
+            border-bottom: 1px solid rgba(201, 160, 80, 0.12);
+        }
+
+        .central-arcana .central-mantra .mantra-text {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: #c9a050;
+            letter-spacing: 3px;
+            line-height: 1.6;
+            text-shadow: 0 0 25px rgba(201, 160, 80, 0.2);
+        }
+
+        .central-arcana .central-mantra .mantra-label {
+            font-size: 11px;
+            color: #6a5f50;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* ===== ИНФО-БЛОК ===== */
+        .info-block {
+            background: rgba(20, 20, 35, 0.5);
+            border: 1px solid rgba(201, 160, 80, 0.08);
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin: 40px 0;
+        }
+
+        .info-block h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #c9a050;
+            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-block p {
+            font-size: 15px;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            color: #b8ab9a;
+        }
+
+        .info-block strong {
+            color: #c9a050;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0 20px;
+            border-top: 1px solid rgba(201, 160, 80, 0.15);
+            text-align: center;
+            color: #6a5f50;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #8a7a6a;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        footer a:hover {
+            color: #c9a050;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 30px; letter-spacing: 2px; }
+            .calc-box { padding: 25px 20px; }
+            .form-row { flex-direction: column; align-items: stretch; }
+            .form-group input, .form-group select { width: 100%; }
+            .calc-btn { width: 100%; }
+            .central-arcana .number { font-size: 56px; }
+            .central-arcana .name { font-size: 22px; }
+            nav a { font-size: 12px; }
+
+            .arcana-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .arcana-card {
+                padding: 26px 22px;
+            }
+            .arcana-card .number { font-size: 44px; }
+            .arcana-card .name { font-size: 19px; }
+            .arcana-card.expanded {
+                padding: 28px 22px;
+            }
+            .detail-text { font-size: 14px; }
+
+            /* Центральный аркан на мобильных */
+            .central-arcana {
+                padding: 35px 22px 30px;
+            }
+            .central-arcana .central-details {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            .central-arcana .central-short {
+                font-size: 16px;
+            }
+            .central-arcana .central-mantra .mantra-text {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+            .central-arcana .central-block {
+                padding: 18px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== ШАПКА ===== -->
+    <header>
+        <div class="logo">
+            ᛝᚲᚷᛉᚠᚨᚱ
+            <span>Старший Футарк · 24 руны</span>
+        </div>
+        <nav>
+            <div class="nav-row nav-row-left">
+                <a href="index.html">Главная</a>
+                <a href="runes.html">Руны Футарха</a>
+                <a href="rune-horoscope.html">Рунический гороскоп</a>
+                <a href="rune-divination.html">Гадание на рунах</a>
+                <a href="rune-magic.html">Магия</a>
+                <a href="gods.html">Асы Боги Скандинавии</a>
+                <a href="mifolgi.html">Скандинавская мифология</a>
+                <a href="about.html">О сайте</a>
+            </div>
+            <div class="nav-row nav-row-right">
+                <a href="feedback.html">📧 Обратная связь с поддержкой</a>
+                <a href="consultation.html" class="support-link">✈️ Консультация рунолога</a>
+                <a href="support.html" class="support-link">₽ Финансовая поддержка сайта</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== ЗАГОЛОВОК ===== -->
+    <section class="page-hero">
+        <h1>Карта судьбы по 22 арканам</h1>
+        <p class="subtitle">
+            Введите дату рождения — и узнайте свои ключевые арканы.
+            Карта судьбы показывает врождённые качества, кармические задачи и предназначение.
+        </p>
+    </section>
+
+    <!-- ===== ФОРМА ===== -->
+    <section class="calc-box">
+        <h2>✦ Введите дату рождения ✦</h2>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="day">День</label>
+                <input type="number" id="day" min="1" max="31" placeholder="1–31">
+            </div>
+            <div class="form-group">
+                <label for="month">Месяц</label>
+                <input type="number" id="month" min="1" max="12" placeholder="1–12">
+            </div>
+            <div class="form-group">
+                <label for="year">Год</label>
+                <input type="number" id="year" min="1900" max="2100" placeholder="1990">
+            </div>
+            <button class="calc-btn" onclick="calculate()">Рассчитать</button>
+        </div>
+    </section>
+
+    <!-- ===== РЕЗУЛЬТАТЫ ===== -->
+    <section class="results" id="results">
+        <h2 class="results-title">✦ Ваша карта судьбы ✦</h2>
+        <p class="results-date" id="resultsDate"></p>
+
+        <!-- Центральный аркан -->
+        <div class="central-arcana" id="centralArcana"></div>
+
+        <!-- Остальные позиции -->
+        <div class="arcana-grid" id="arcanaGrid"></div>
+    </section>
+
+    <!-- ===== ИНФО-БЛОК ===== -->
+    <section class="info-block">
+        <h2>✦ Что такое карта судьбы ✦</h2>
+        <p>
+            <strong>Карта судьбы по 22 арканам</strong> — это система самопознания, основанная на
+            старших арканах Таро. Каждый аркан — это архетип, определённое качество или жизненный
+            сценарий, который проявляется в характере и судьбе человека.
+        </p>
+        <p>
+            Расчёт строится на дате рождения: день, месяц и год сводятся к числам от 1 до 22.
+            Если сумма превышает 22, из неё вычитается 22 до получения числа в этом диапазоне.
+        </p>
+        <p>
+            <strong>Центральный аркан</strong> — ядро личности, главный жизненный урок.
+            <strong>Кармический аркан</strong> — задачи, пришедшие из прошлого.
+            <strong>Аркан таланта</strong> — врождённые способности.
+            <strong>Аркан предназначения</strong> — путь реализации.
+        </p>
+    </section>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer>
+        <p>ᛝᚲᚷᛉᚠᚨᚱ · руны Старшего Футарка</p>
+        <p style="margin-top: 10px;">
+            <a href="#">Источники</a> ·
+            <a href="https://t.me/FutharkRunes">Контакты</a>
+        </p>
+        <p style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+            © 2026 · ᚲᛃᚨᛉᚷᚠᚱ Сделано с душой и мудростью
+        </p>
+    </footer>
+
+</div>
+
+<script>
+/* ===== РАСШИРЕННЫЕ ОПИСАНИЯ 22 АРКАНОВ ===== */
+const arcana = {
+    1: {
+        name: 'Маг',
+        short: 'Воля, мастерство, сила слова.',
+        personality: 'Прирождённый лидер и творец. Вы умеете превращать идеи в реальность силой намерения. Вам даны острый ум, красноречие и способность убеждать. Часто становитесь центром внимания, даже если не стремитесь к этому.',
+        health: 'Сильная нервная система, но склонность к переутомлению из-за постоянной активности. Слабое место — голова и речь (головные боли, бессонница от перегруза мыслями). Показаны дыхательные практики, умеренность в стимуляторах.',
+        life: 'Высокое качество жизни при условии реализации амбиций. Без дела чувствуете пустоту. Финансы приходят через интеллект, коммуникацию, личные проекты. Важно не растрачиваться на мелкие цели.',
+        pros: 'Инициативность, харизма, ясность мысли, дар убеждения',
+        cons: 'Склонность к манипуляции, эгоцентризм, суетливость',
+        advice: 'Ставьте крупные цели и доводите до конца. Слово — ваш главный инструмент, следите за его чистотой.'
+    },
+    2: {
+        name: 'Жрица',
+        short: 'Интуиция, тайное знание, внутренний голос.',
+        personality: 'Глубокий, созерцательный человек. Вы чувствуете людей и события раньше, чем они проявляются. Склонны к уединению, изучению тайного, психологии, эзотерики. Ваша сила — в молчании и наблюдении.',
+        health: 'Чувствительная психика, склонность к психосоматике. Слабое место — гормональная система, женские органы, лимфа. Показаны водные процедуры, тишина, режим сна. Избегайте токсичного окружения.',
+        life: 'Качество жизни зависит от внутренней гармонии, а не от внешних благ. Часто выбираете скромность, но обладаете скрытым влиянием. Деньги приходят через знание, консультирование, творчество.',
+        pros: 'Глубокая интуиция, мудрость, терпение, эмпатия',
+        cons: 'Замкнутость, пассивность, склонность к иллюзиям',
+        advice: 'Доверяйте внутреннему голосу, но проверяйте его реальностью. Не прячьтесь от мира полностью.'
+    },
+    3: {
+        name: 'Императрица',
+        short: 'Плодородие, изобилие, забота.',
+        personality: 'Тёплая, щедрая, творческая натура. Вы создаёте вокруг себя уют и питаете других — идеями, заботой, ресурсами. Прирождённый родитель и наставник. Любите красоту и материальное воплощение идей.',
+        health: 'Крепкое тело, но склонность к набору веса и застойным явлениям. Слабое место — репродуктивная система, пищеварение, обмен веществ. Показаны движение, лёгкое питание, пребывание на природе.',
+        life: 'Высокое качество жизни через изобилие и комфорт. Умеете зарабатывать и тратить с умом. Дом — ваша крепость. Финансы приходят через творчество, землю, заботу, торговлю.',
+        pros: 'Щедрость, плодовитость идей, чувство прекрасного, забота',
+        cons: 'Склонность к гиперопеке, лень, привязка к материальному',
+        advice: 'Позвольте себе отдыхать без чувства вины. Заботьтесь о себе так же, как о других.'
+    },
+    4: {
+        name: 'Император',
+        short: 'Порядок, власть, структура.',
+        personality: 'Сильный, дисциплинированный, ответственный. Вы умеете строить системы и управлять людьми. Цените порядок, стабильность, иерархию. Прирождённый руководитель, отец, защитник.',
+        health: 'Выносливое тело, но склонность к гипертонии, проблемам с сердцем и опорно-двигательным аппаратом. Слабое место — позвоночник, суставы. Показаны физические нагрузки, режим, отказ от жёстких диет.',
+        life: 'Стабильное качество жизни, достигнутое трудом и дисциплиной. Деньги приходят через управление, бизнес, недвижимость, структуры. Важно не превращаться в тирана для близких.',
+        pros: 'Надёжность, лидерство, стратегическое мышление, воля',
+        cons: 'Жёсткость, упрямство, подавление чувств',
+        advice: 'Учитесь делегировать и слушать. Сила — в гибкости, а не в жёсткости.'
+    },
+    5: {
+        name: 'Жрец',
+        short: 'Мудрость, традиция, наставничество.',
+        personality: 'Человек знания и традиции. Вы ищете смысл, обучаете других, храните ценности. Уважаете правила и ритуалы. Часто становитесь духовным авторитетом для окружения.',
+        health: 'Склонность к хроническим заболеваниям из-за сидячего образа жизни. Слабое место — печень, суставы, зрение. Показаны умеренные нагрузки, чтение при хорошем свете, отказ от алкоголя.',
+        life: 'Качество жизни через служение и знание. Финансы скромные, но стабильные. Часто выбираете путь учителя, священника, исследователя, консультанта.',
+        pros: 'Мудрость, честность, наставничество, верность принципам',
+        cons: 'Догматизм, морализаторство, оторванность от реальности',
+        advice: 'Не навязывайте истину — делитесь ею. Живите тем, чему учите.'
+    },
+    6: {
+        name: 'Влюблённые',
+        short: 'Выбор, любовь, союз.',
+        personality: 'Чувствительный, общительный, ориентированный на отношения. Вы ищете гармонию и партнёрство. Ваша жизнь — постоянный выбор между сердцем и разумом, между «я» и «мы».',
+        health: 'Слабое место — сердце, лёгкие, иммунная система. Склонность к психосоматике от нерешённых конфликтов. Показаны кардио-нагрузки, дыхательные практики, гармония в отношениях.',
+        life: 'Качество жизни напрямую зависит от партнёра и окружения. Финансы приходят через партнёрство, творчество, коммуникацию. Важно не терять себя в других.',
+        pros: 'Доброта, обаяние, умение любить, дипломатичность',
+        cons: 'Нерешительность, зависимость от мнения других, изменчивость',
+        advice: 'Выбирайте сердцем, но проверяйте разумом. Ваш путь — баланс между «я» и «мы».'
+    },
+    7: {
+        name: 'Колесница',
+        short: 'Победа, движение, воля.',
+        personality: 'Целеустремлённый, энергичный, волевой. Вы не терпите застоя и всегда в движении. Умеете преодолевать препятствия и вести за собой. Ваша жизнь — путь воина и победителя.',
+        health: 'Высокая энергия, но склонность к травмам и переутомлению. Слабое место — ноги, колени, нервная система. Показаны активные виды спорта, режим восстановления, отказ от перегрузок.',
+        life: 'Качество жизни через движение и достижения. Финансы приходят через путешествия, транспорт, спорт, предпринимательство. Важно не гнаться за скоростью в ущерб смыслу.',
+        pros: 'Воля, смелость, настойчивость, лидерство',
+        cons: 'Нетерпеливость, агрессия, склонность к авантюрам',
+        advice: 'Двигайтесь к цели, но не забывайте, зачем начали путь. Победа без смысла — поражение.'
+    },
+    8: {
+        name: 'Сила',
+        short: 'Внутренняя мощь, терпение, укрощение страстей.',
+        personality: 'Спокойный, уверенный, терпеливый. Ваша сила — не в агрессии, а в мягкости и выдержке. Вы умеете управлять страстями — своими и чужими — без насилия.',
+        health: 'Крепкое тело, но склонность к заболеваниям сердца и нервной системы от сдерживания эмоций. Слабое место — сердце, спина, зубы. Показаны расслабляющие практики, творчество.',
+        life: 'Качество жизни через гармонию и самоконтроль. Финансы приходят через терпение, работу с людьми и животными, творчество. Важно не подавлять желания, а направлять их.',
+        pros: 'Выдержка, доброта, внутренняя сила, самообладание',
+        cons: 'Подавление эмоций, пассивность, склонность к самопожертвованию',
+        advice: 'Настоящая сила — в умении быть мягким. Не бойтесь показывать чувства.'
+    },
+    9: {
+        name: 'Отшельник',
+        short: 'Уединение, поиск истины, духовный путь.',
+        personality: 'Мудрый, замкнутый, ищущий. Вы предпочитаете глубину поверхностности. Ваша жизнь — путь внутреннего поиска и духовного роста. Часто становитесь наставником для других, пройдя путь сами.',
+        health: 'Склонность к депрессивным состояниям, апатии, проблемам со сном. Слабое место — кости, суставы, психика. Показаны умеренные нагрузки, свет, общение, пребывание на природе.',
+        life: 'Качество жизни через уединение и знание. Финансы скромные, но достаточные. Часто выбираете путь философа, исследователя, отшельника, духовного учителя.',
+        pros: 'Глубина, честность, мудрость, независимость',
+        cons: 'Изоляция, пессимизм, оторванность от быта',
+        advice: 'Ваше одиночество — не бегство, а поиск. Но помните: свет нужно не только искать, но и делиться им.'
+    },
+    10: {
+        name: 'Колесо Фортуны',
+        short: 'Судьба, циклы, перемены.',
+        personality: 'Переменчивый, удачливый, зависящий от обстоятельств. Ваша жизнь — череда взлётов и падений. Вы умеете адаптироваться и находить возможности там, где другие видят крах.',
+        health: 'Слабое место — пищеварение, обмен веществ, нервная система. Склонность к резким изменениям состояния. Показаны режим, стабильное питание, отказ от азарта и крайностей.',
+        life: 'Качество жизни нестабильно: периоды изобилия сменяются кризисами. Финансы приходят через удачу, риски, нестандартные решения. Важно копить в «сытые» времена.',
+        pros: 'Удача, гибкость, оптимизм, умение меняться',
+        cons: 'Нестабильность, фатализм, зависимость от случая',
+        advice: 'Принимайте циклы жизни. Падение — не конец, а начало нового витка.'
+    },
+    11: {
+        name: 'Справедливость',
+        short: 'Закон, равновесие, карма.',
+        personality: 'Справедливый, принципиальный, честный. Вы цените порядок и закон. Умеете видеть причинно-следственные связи. Ваша жизнь — путь истины и равновесия.',
+        health: 'Слабое место — почки, поясница, иммунная система. Склонность к заболеваниям от стресса и несправедливости. Показаны умеренность, водные процедуры, справедливый режим труда и отдыха.',
+        life: 'Качество жизни через честность и закон. Финансы приходят через юридическую сферу, управление, правосудие. Важно не быть слишком строгим к себе и другим.',
+        pros: 'Честность, ответственность, ясность, чувство меры',
+        cons: 'Жёсткость, категоричность, склонность к осуждению',
+        advice: 'Будьте справедливы прежде всего к себе. Закон — не клетка, а опора.'
+    },
+    12: {
+        name: 'Повешенный',
+        short: 'Жертва, новый взгляд, пауза.',
+        personality: 'Глубокий, жертвенный, нестандартный. Вы умеете видеть мир под другим углом. Часто оказываетесь в ситуациях, где нужно отпустить контроль и довериться потоку.',
+        health: 'Слабое место — психика, зависимость от чужого мнения. Склонность к депрессиям, психосоматике. Показаны медитации, смена обстановки, творчество, отказ от самоедства.',
+        life: 'Качество жизни через принятие и отпускание. Финансы приходят через нестандартные решения, творчество, помощь другим. Важно не застревать в роли жертвы.',
+        pros: 'Глубина, сострадание, нестандартное мышление, терпение',
+        cons: 'Пассивность, жертвенность, зависимость',
+        advice: 'Иногда, чтобы идти вперёд, нужно сначала остановиться. Но не превращайте паузу в вечность.'
+    },
+    13: {
+        name: 'Смерть',
+        short: 'Трансформация, конец и начало.',
+        personality: 'Сильный, трансформирующий, бесстрашный. Вы умеете отпускать старое и начинать заново. Ваша жизнь — постоянное обновление. Часто проходите через кризисы, которые делают вас сильнее.',
+        health: 'Слабое место — хронические заболевания, иммунная система. Склонность к резким изменениям состояния. Показаны очищение, детокс, здоровый образ жизни, отказ от вредных привычек.',
+        life: 'Качество жизни через обновление и освобождение. Финансы приходят через кризисные профессии, реформирование, медицину, психологию. Важно не цепляться за прошлое.',
+        pros: 'Сила, бесстрашие, способность к трансформации, глубина',
+        cons: 'Разрушительность, резкость, склонность к крайностям',
+        advice: 'Смерть — это не конец, а переход. Отпускайте старое с благодарностью.'
+    },
+    14: {
+        name: 'Умеренность',
+        short: 'Баланс, гармония, исцеление.',
+        personality: 'Гармоничный, спокойный, целительный. Вы умеете соединять противоположности и находить середину. Ваша жизнь — путь баланса и исцеления — своего и чужого.',
+        health: 'Крепкое здоровье при условии умеренности. Слабое место — печень, обмен веществ, нервная система. Показаны сбалансированное питание, умеренные нагрузки, режим.',
+        life: 'Качество жизни через гармонию и умеренность. Финансы приходят через медицину, психологию, искусство, посредничество. Важно не впадать в крайности.',
+        pros: 'Гармония, терпение, целительство, дипломатичность',
+        cons: 'Нерешительность, склонность к компромиссам в ущерб себе',
+        advice: 'Ваша сила — в балансе. Не бойтесь иногда нарушать равновесие ради роста.'
+    },
+    15: {
+        name: 'Дьявол',
+        short: 'Страсти, искушения, зависимость.',
+        personality: 'Магнетический, страстный, сильный. Вы обладаете притягательной энергией и умеете управлять желаниями — своими и чужими. Ваш урок — освобождение от оков и зависимостей.',
+        health: 'Слабое место — зависимость от вредных привычек, психика, половая система. Склонность к психосоматике и саморазрушению. Показаны строгий режим, отказ от токсинов, духовные практики.',
+        life: 'Качество жизни через освобождение от зависимостей. Финансы приходят через работу с людьми, бизнес, творчество, но важно не переступать черту. Деньги не должны управлять вами.',
+        pros: 'Сила, харизма, страсть, умение видеть скрытое',
+        cons: 'Зависимости, манипуляции, саморазрушение',
+        advice: 'Ваша сила — в свободе от желаний, а не в их удовлетворении. Цепи куются в уме.'
+    },
+    16: {
+        name: 'Башня',
+        short: 'Крушение, прозрение, внезапные перемены.',
+        personality: 'Сильный, революционный, прямолинейный. Вы разрушаете старое, чтобы построить новое. Ваша жизнь — череда кризисов и обновлений. Часто становитесь катализатором перемен для других.',
+        health: 'Слабое место — нервная система, травмы, сердце. Склонность к резким срывам от стресса. Показаны стабильный режим, отдых, отказ от перегрузок, психотерапия.',
+        life: 'Качество жизни через кризисы и обновления. Финансы приходят через реформы, строительство, разрушение старого. Важно не разрушать то, что можно сохранить.',
+        pros: 'Сила, честность, способность к обновлению, прозрение',
+        cons: 'Разрушительность, резкость, склонность к конфликтам',
+        advice: 'Разрушение — не цель, а средство. Стройте новое на месте старого осознанно.'
+    },
+    17: {
+        name: 'Звезда',
+        short: 'Надежда, вдохновение, вера.',
+        personality: 'Мечтательный, вдохновляющий, светлый. Вы несёте надежду и веру другим. Ваша жизнь — путь творчества и духовного служения. Часто становитесь музой для окружающих.',
+        health: 'Слабое место — нервная система, сон, иммунитет. Склонность к переутомлению от эмоциональной отдачи. Показаны отдых, вода, творчество, пребывание на природе.',
+        life: 'Качество жизни через вдохновение и творчество. Финансы приходят через искусство, духовные практики, помощь другим. Важно не витать в облаках и заземляться.',
+        pros: 'Вдохновение, вера, творчество, целительство',
+        cons: 'Оторванность от реальности, пассивность, иллюзии',
+        advice: 'Ваша звезда ведёт вас — но не забывайте про землю под ногами.'
+    },
+    18: {
+        name: 'Луна',
+        short: 'Иллюзии, тайны, подсознание.',
+        personality: 'Загадочный, чувствительный, интуитивный. Вы живёте в мире образов и символов. Ваша жизнь — путь через тьму к ясности. Часто обладаете даром ясновидения и психологии.',
+        health: 'Слабое место — психика, сон, гормональная система. Склонность к депрессиям, страхам, зависимостям. Показаны медитации, творчество, вода, отказ от алкоголя и стимуляторов.',
+        life: 'Качество жизни через понимание подсознания. Финансы приходят через творчество, психологию, эзотерику. Важно не терять связь с реальностью.',
+        pros: 'Интуиция, глубина, творчество, эмпатия',
+        cons: 'Иллюзии, страхи, нестабильность, зависимости',
+        advice: 'Тьма — не враг, а учитель. Но чтобы выйти к свету, нужно двигаться.'
+    },
+    19: {
+        name: 'Солнце',
+        short: 'Радость, успех, ясность.',
+        personality: 'Яркий, радостный, успешный. Вы светите и согреваете других. Ваша жизнь — путь успеха и признания. Часто становитесь центром внимания и лидером.',
+        health: 'Крепкое здоровье при условии умеренности. Слабое место — сердце, глаза, нервная система. Склонность к переутомлению от активности. Показаны отдых, умеренность, режим.',
+        life: 'Высокое качество жизни через успех и признание. Финансы приходят через лидерство, творчество, публичность. Важно не ослепнуть от собственного света.',
+        pros: 'Оптимизм, успех, харизма, щедрость',
+        cons: 'Тщеславие, эгоцентризм, склонность к выгоранию',
+        advice: 'Светите, но не выгорайте. Ваша сила — в щедрости, а не в славе.'
+    },
+    20: {
+        name: 'Суд',
+        short: 'Возрождение, зов, пробуждение.',
+        personality: 'Пробуждённый, призванный, сильный. Вы чувствуете своё предназначение и зов. Ваша жизнь — путь возрождения и служения. Часто становитесь голосом истины для других.',
+        health: 'Слабое место — слух, нервная система, иммунитет. Склонность к заболеваниям от стресса и подавленных эмоций. Показаны духовные практики, тишина, творчество.',
+        life: 'Качество жизни через реализацию предназначения. Финансы приходят через служение, духовные практики, реформы. Важно не игнорировать зов.',
+        pros: 'Сила, предназначение, честность, способность к возрождению',
+        cons: 'Фанатизм, категоричность, склонность к самопожертвованию',
+        advice: 'Слышите зов — отвечайте. Ваша жизнь имеет смысл, даже если он не очевиден.'
+    },
+    21: {
+        name: 'Мир',
+        short: 'Завершение, целостность, гармония.',
+        personality: 'Целостный, гармоничный, завершённый. Вы достигли внутренней полноты и умеете видеть картину целиком. Ваша жизнь — путь завершения и гармонии. Часто становитесь миротворцем.',
+        health: 'Крепкое здоровье при условии гармонии. Слабое место — обмен веществ, иммунитет. Показаны умеренность, путешествия, творчество, пребывание в гармонии с природой.',
+        life: 'Высокое качество жизни через целостность и гармонию. Финансы приходят через международные связи, творчество, экологию. Важно не застывать в достигнутом.',
+        pros: 'Гармония, целостность, миротворчество, мудрость',
+        cons: 'Склонность к застою, самодовольство, оторванность',
+        advice: 'Мир — это не конец пути, а начало нового. Делитесь гармонией с другими.'
+    },
+    22: {
+        name: 'Шут',
+        short: 'Свобода, спонтанность, начало пути.',
+        personality: 'Свободный, спонтанный, лёгкий. Вы не терпите рамок и всегда открыты новому. Ваша жизнь — игра и путешествие. Часто становитесь источником радости и неожиданных решений.',
+        health: 'Слабое место — нервная система, травмы, зависимость от вредных привычек. Склонность к авантюрам и риску. Показаны режим, умеренность, физическая активность.',
+        life: 'Качество жизни через свободу и приключения. Финансы приходят через нестандартные решения, путешествия, творчество. Важно не растрачивать себя по мелочам.',
+        pros: 'Свобода, лёгкость, спонтанность, открытость',
+        cons: 'Безответственность, инфантильность, склонность к риску',
+        advice: 'Жизнь — игра, но играйте осознанно. Свобода без ответственности — хаос.'
+    }
+};
+
+/* ===== СВЁРТКА ЧИСЛА ДО 1–22 ===== */
+function reduce(n) {
+    n = Math.abs(n);
+    while (n > 22) n -= 22;
+    if (n === 0) n = 22;
+    return n;
+}
+
+function digitSum(n) {
+    return String(n).split('').reduce((s, d) => s + Number(d), 0);
+}
+
+/* ===== РАСЧЁТ ===== */
+function calculate() {
+    const day   = parseInt(document.getElementById('day').value);
+    const month = parseInt(document.getElementById('month').value);
+    const year  = parseInt(document.getElementById('year').value);
+
+    if (!day || !month || !year) {
+        alert('Пожалуйста, заполните все поля даты рождения.');
+        return;
+    }
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 2100) {
+        alert('Проверьте корректность даты (день 1–31, месяц 1–12, год 1900–2100).');
+        return;
+    }
+
+    const aDay   = reduce(day);
+    const aMonth = reduce(month);
+    const aYear  = reduce(digitSum(year));
+    const aCenter = reduce(aDay + aMonth + aYear);
+    const aKarma  = reduce(aDay + aMonth);
+    const aTalent = reduce(aMonth + aYear);
+    const aPurpose = reduce(aDay + aYear);
+
+    const months = ['января','февраля','марта','апреля','мая','июня',
+                    'июля','августа','сентября','октября','ноября','декабря'];
+    document.getElementById('resultsDate').textContent =
+        `${day} ${months[month - 1]} ${year} г.`;
+
+    /* Центральный аркан — расширенный */
+    const c = arcana[aCenter];
+    document.getElementById('centralArcana').innerHTML = `
+        <div class="label">✦ Центральный аркан ✦</div>
+        <div class="number">${aCenter}</div>
+        <div class="name">${c.name}</div>
+        <div class="central-short">«${c.short}»</div>
+
+        <div class="central-divider"></div>
+
+        <div class="central-details">
+
+            <div class="central-block wide">
+                <div class="central-label">Личность</div>
+                <div class="central-text">${c.personality}</div>
+            </div>
+
+            <div class="central-block">
+                <div class="central-label">Здоровье</div>
+                <div class="central-text">${c.health}</div>
+            </div>
+
+            <div class="central-block">
+                <div class="central-label">Качество жизни</div>
+                <div class="central-text">${c.life}</div>
+            </div>
+
+            <div class="central-block pros">
+                <div class="central-label">Сильные стороны</div>
+                <div class="central-text">${c.pros}</div>
+            </div>
+
+            <div class="central-block cons">
+                <div class="central-label">Слабые стороны</div>
+                <div class="central-text">${c.cons}</div>
+            </div>
+
+            <div class="central-block advice wide">
+                <div class="central-label">Главный урок жизни</div>
+                <div class="central-text">${c.advice}</div>
+            </div>
+
+        </div>
+
+        <div class="central-mantra">
+            <div class="mantra-label">Ключевая фраза аркана</div>
+            <div class="mantra-text">${getMantra(aCenter)}</div>
+        </div>
+    `;
+
+    /* Остальные позиции */
+    const positions = [
+        { label: 'Аркан дня',            num: aDay },
+        { label: 'Аркан месяца',         num: aMonth },
+        { label: 'Аркан года',           num: aYear },
+        { label: 'Кармический аркан',    num: aKarma },
+        { label: 'Аркан таланта',        num: aTalent },
+        { label: 'Аркан предназначения', num: aPurpose }
+    ];
+
+    const grid = document.getElementById('arcanaGrid');
+    grid.innerHTML = positions.map(p => {
+        const a = arcana[p.num];
+        return `
+            <div class="arcana-card" onclick="toggleDetails(this)">
+                <div class="position">${p.label}</div>
+                <div class="number">${p.num}</div>
+                <div class="name">${a.name}</div>
+                <div class="desc">${a.short}</div>
+                <div class="details">
+                    <div class="detail-block">
+                        <div class="detail-label">✦ Личность</div>
+                        <div class="detail-text">${a.personality}</div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">✦ Здоровье</div>
+                        <div class="detail-text">${a.health}</div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">✦ Качество жизни</div>
+                        <div class="detail-text">${a.life}</div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">✦ Сильные стороны</div>
+                        <div class="detail-text">${a.pros}</div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">✦ Слабые стороны</div>
+                        <div class="detail-text">${a.cons}</div>
+                    </div>
+                    <div class="detail-block advice">
+                        <div class="detail-label">✦ Совет</div>
+                        <div class="detail-text">${a.advice}</div>
+                    </div>
+                </div>
+                <div class="toggle-hint">▾ Подробнее</div>
+            </div>
+        `;
+    }).join('');
+
+    const results = document.getElementById('results');
+    results.classList.add('visible');
+    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ===== РАСКРЫТИЕ ДЕТАЛЕЙ (с автозакрытием других) ===== */
+function toggleDetails(card) {
+    const isExpanded = card.classList.contains('expanded');
+
+    document.querySelectorAll('.arcana-card.expanded').forEach(c => {
+        if (c !== card) {
+            c.classList.remove('expanded');
+            const h = c.querySelector('.toggle-hint');
+            if (h) h.textContent = '▾ Подробнее';
+        }
+    });
+
+    card.classList.toggle('expanded');
+    const hint = card.querySelector('.toggle-hint');
+    hint.textContent = card.classList.contains('expanded') ? '▴ Свернуть' : '▾ Подробнее';
+
+    if (!isExpanded) {
+        setTimeout(() => {
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 150);
+    }
+}
+
+/* ===== КЛЮЧЕВЫЕ ФРАЗЫ (МАНТРЫ) 22 АРКАНОВ ===== */
+function getMantra(num) {
+    const mantras = {
+        1:  'Я творю реальность силой слова',
+        2:  'Я знаю то, что скрыто от глаз',
+        3:  'Я питаю мир своим изобилием',
+        4:  'Я строю порядок из хаоса',
+        5:  'Я хранитель знания и традиции',
+        6:  'Я выбираю сердцем и живу в союзе',
+        7:  'Я побеждаю, потому что иду вперёд',
+        8:  'Моя сила — в мягкости и терпении',
+        9:  'В тишине я нахожу истину',
+        10: 'Я принимаю циклы судьбы',
+        11: 'Я живу по закону равновесия',
+        12: 'Я отпускаю контроль и вижу иначе',
+        13: 'Я умираю для старого, чтобы жить в новом',
+        14: 'Я исцеляю себя и мир гармонией',
+        15: 'Я свободен от цепей желаний',
+        16: 'Я разрушаю иллюзии, чтобы строить истину',
+        17: 'Я несу свет надежды даже в темноте',
+        18: 'Я прохожу тьму, чтобы выйти к ясности',
+        19: 'Я свечу и согреваю своим светом',
+        20: 'Я слышу зов и отвечаю на него',
+        21: 'Я целостен и пребываю в гармонии',
+        22: 'Я играю в жизнь осознанно и свободно'
+    };
+    return mantras[num] || '';
+}
+
+/* ===== РАСЧЁТ ПО ENTER ===== */
+document.querySelectorAll('.form-group input').forEach(input => {
+    input.addEventListener('keypress', e => {
+        if (e.key === 'Enter') calculate();
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор рунических ставов | Построение става</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%23c9a050' stroke-width='3'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%23c9a050' font-weight='bold' font-family='serif'>ᚨ</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cinzel', 'Georgia', serif;
+            background: #0d0d1a;
+            color: #d4c9b8;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(ellipse at 20% 50%, rgba(201, 160, 80, 0.05) 0%, transparent 60%);
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0 16px;
+            border-bottom: 1px solid rgba(201, 160, 80, 0.2);
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: #c9a050;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .logo span {
+            font-size: 13px;
+            color: #8a7a6a;
+            display: block;
+            font-weight: 400;
+        }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 10px;
+            margin-top: 12px;
+        }
+        nav a {
+            color: #b8ab9a;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.8px;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+        }
+        nav a:hover { color: #c9a050; border-bottom-color: #c9a050; }
+        nav a.active { color: #c9a050; border-bottom-color: #c9a050; }
+
+        h1 { text-align: center; font-size: 32px; color: #c9a050; letter-spacing: 4px; margin-bottom: 6px; }
+        .subtitle { text-align: center; color: #8a7a6a; font-size: 15px; font-family: 'Georgia', serif; font-style: italic; margin-bottom: 30px; }
+
+        .calc-form {
+            max-width: 650px;
+            margin: 0 auto;
+            background: rgba(20, 20, 35, 0.4);
+            border: 1px solid rgba(201, 160, 80, 0.08);
+            border-radius: 16px;
+            padding: 30px 25px;
+        }
+        .calc-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .calc-field {
+            flex: 1;
+            min-width: 120px;
+            max-width: 160px;
+        }
+        .calc-field label {
+            display: block;
+            color: #d4c9b8;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        .calc-field select {
+            width: 100%;
+            padding: 10px 6px;
+            background: rgba(10, 10, 20, 0.4);
+            border: 2px solid rgba(201, 160, 80, 0.1);
+            border-radius: 10px;
+            color: #d4c9b8;
+            font-size: 20px;
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .calc-field select:focus { border-color: #c9a050; }
+        .calc-field .pos-label {
+            font-size: 9px;
+            color: #6a5f50;
+            text-align: center;
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+        .calc-field.center-field {
+            max-width: 120px;
+        }
+        .calc-field.center-field select {
+            font-size: 24px;
+            border-color: rgba(201,160,80,0.2);
+        }
+        .btn-calc {
+            width: 100%;
+            padding: 14px;
+            margin-top: 18px;
+            background: rgba(201, 160, 80, 0.12);
+            border: 2px solid rgba(201, 160, 80, 0.2);
+            border-radius: 30px;
+            color: #e8c85a;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-calc:hover {
+            background: rgba(201, 160, 80, 0.22);
+            border-color: #c9a050;
+        }
+
+        #result {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.6s ease;
+        }
+        #result.show { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stav-visual {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(20, 20, 35, 0.5);
+            border: 1px solid rgba(201, 160, 80, 0.12);
+            border-radius: 16px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stav-canvas-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 420px;
+        }
+        .stav-canvas-wrapper svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .stav-name-block { margin-top: 16px; }
+        .stav-name-block .stav-title {
+            font-size: 24px;
+            color: #e8ddd0;
+            letter-spacing: 3px;
+        }
+        .stav-name-block .stav-purpose {
+            font-size: 16px;
+            color: #b8ab9a;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* Кнопка скачивания */
+        .download-btn-wrapper {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .download-btn-wrapper button {
+            padding: 12px 35px;
+            background: rgba(201, 160, 80, 0.12);
+            border: 2px solid rgba(201, 160, 80, 0.2);
+            border-radius: 30px;
+            color: #e8c85a;
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            touch-action: manipulation;
+        }
+        .download-btn-wrapper button:hover {
+            background: rgba(201, 160, 80, 0.22);
+            border-color: #c9a050;
+        }
+
+        .stav-runes {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .rune-card {
+            background: rgba(13, 13, 26, 0.4);
+            border: 1px solid rgba(201, 160, 80, 0.06);
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+        .rune-card .symbol {
+            font-size: 40px;
+            color: #f0d890;
+            display: block;
+        }
+        .rune-card .name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e8ddd0;
+            letter-spacing: 1px;
+        }
+        .rune-card .position {
+            font-size: 10px;
+            color: #6a5f50;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 4px 0 6px;
+        }
+        .rune-card .meaning {
+            font-size: 12px;
+            color: #b8ab9a;
+            font-family: 'Georgia', serif;
+            line-height: 1.4;
+        }
+
+        .stav-interpretation {
+            background: rgba(20, 20, 35, 0.5);
+            border: 1px solid rgba(201, 160, 80, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+        .stav-interpretation h3 {
+            color: #c9a050;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .stav-interpretation .formula-line {
+            text-align: center;
+            font-size: 20px;
+            color: #c9a050;
+            letter-spacing: 4px;
+            margin: 8px 0 12px;
+            font-weight: 700;
+        }
+        .stav-interpretation .desc {
+            color: #b8ab9a;
+            font-size: 15px;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(201, 160, 80, 0.1);
+            text-align: center;
+            color: #6a5f50;
+            font-size: 13px;
+        }
+        footer a { color: #8a7a6a; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .calc-row { flex-direction: column; align-items: center; }
+            .calc-field { min-width: 100%; max-width: 100%; }
+            .calc-field.center-field { max-width: 100%; }
+            .stav-runes { grid-template-columns: 1fr; }
+            h1 { font-size: 26px; }
+        }
+        @media (max-width: 480px) {
+            .calc-field select { font-size: 18px; }
+            .stav-name-block .stav-title { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logo">
+            ᛝᚲᚷᛉᚠᚨᚱ
+            <span>Старший Футарк · 24 руны</span>
+        </div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="runes.html">Руны</a>
+            <a href="rune-horoscope.html">Гороскоп</a>
+            <a href="rune-divination.html">Гадание</a>
+            <a href="rune-stav-calculator.html" class="active">Калькулятор става</a>
+            <a href="rune-magic.html">Магия</a>
+            <a href="gods.html">Боги</a>
+            <a href="mifolgi.html">Мифология</a>
+            <a href="about.html">О сайте</a>
+        </nav>
+    </header>
+
+    <h1>✦ Калькулятор рунических ставов ✦</h1>
+    <p class="subtitle">Выберите 4 руны — система построит став с источником энергии в центре</p>
+
+    <div class="calc-form">
+        <div class="calc-row">
+            <div class="calc-field">
+                <label>Руна 1</label>
+                <select id="rune1"></select>
+                <div class="pos-label">Основа</div>
+            </div>
+            <div class="calc-field">
+                <label>Руна 2</label>
+                <select id="rune2"></select>
+                <div class="pos-label">Действие</div>
+            </div>
+            <div class="calc-field">
+                <label>Руна 3</label>
+                <select id="rune3"></select>
+                <div class="pos-label">Итог</div>
+            </div>
+            <div class="calc-field center-field">
+                <label>✦ Источник</label>
+                <select id="runeCenter"></select>
+                <div class="pos-label">Центр става</div>
+            </div>
+        </div>
+        <button class="btn-calc" id="calcBtn">✦ Построить став ✦</button>
+    </div>
+
+    <div id="result">
+        <div class="stav-visual">
+            <div class="stav-canvas-wrapper">
+                <svg id="stavSvg" viewBox="0 0 500 500" style="width:100%; height:auto;"></svg>
+            </div>
+            <div class="stav-name-block">
+                <div class="stav-title" id="stavTitle">Став «Путь Силы»</div>
+                <div class="stav-purpose" id="stavPurpose">«Найди свой путь и следуй ему»</div>
+            </div>
+        </div>
+
+        <!-- ===== КНОПКА СКАЧИВАНИЯ (ПРАВИЛЬНОЕ МЕСТО) ===== -->
+        <div class="download-btn-wrapper">
+            <button id="downloadBtn">📥 Скачать став (PNG)</button>
+        </div>
+
+        <div class="stav-runes" id="stavRunes"></div>
+
+        <div class="stav-interpretation">
+            <h3>✦ Как работает этот став ✦</h3>
+            <div class="formula-line" id="stavFormula">ᚠ + ᚢ + ᚨ</div>
+            <p class="desc" id="stavDesc">Текст интерпретации...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>ᛝᚲᚷᛉᚠᚨᚱ · Руны Старшего Футарка</p>
+        <p style="margin-top:8px; font-size:12px;">
+            <a href="index.html">Главная</a> · 
+            <a href="runes.html">Руны</a> · 
+            <a href="about.html">О сайте</a>
+        </p>
+        <p style="margin-top:12px; font-size:11px; opacity:0.7;">© 2026 · Сделано с душой и мудростью</p>
+    </footer>
+
+</div>
+
+<script>
+    const runes = [
+        { symbol: 'ᚠ', name: 'Феху', meaning: 'Богатство, энергия созидания, начало движения.' },
+        { symbol: 'ᚢ', name: 'Уруз', meaning: 'Сила, выносливость, мощь, дикая энергия.' },
+        { symbol: 'ᚦ', name: 'Турисаз', meaning: 'Защита, преодоление, отражение негатива.' },
+        { symbol: 'ᚨ', name: 'Ансуз', meaning: 'Мудрость, знание, вдохновение, ясность ума.' },
+        { symbol: 'ᚱ', name: 'Райдо', meaning: 'Путь, движение, путешествие, развитие.' },
+        { symbol: 'ᚲ', name: 'Кеназ', meaning: 'Огонь, творчество, вдохновение, трансформация.' },
+        { symbol: 'ᚷ', name: 'Гебо', meaning: 'Дар, партнёрство, равновесие, союз.' },
+        { symbol: 'ᚹ', name: 'Вуньо', meaning: 'Радость, успех, свет, исполнение желаний.' },
+        { symbol: 'ᚺ', name: 'Хагалаз', meaning: 'Разрушение, очищение, перемена, кризис.' },
+        { symbol: 'ᚾ', name: 'Наутиз', meaning: 'Нужда, терпение, внутренняя сила, преодоление.' },
+        { symbol: 'ᛁ', name: 'Иса', meaning: 'Лёд, остановка, заморозка, сохранение.' },
+        { symbol: 'ᛃ', name: 'Йера', meaning: 'Урожай, цикл, справедливость, результат.' },
+        { symbol: 'ᛇ', name: 'Эйваз', meaning: 'Защита, стойкость, связь с предками.' },
+        { symbol: 'ᛈ', name: 'Перто', meaning: 'Тайна, судьба, интуиция, женская мудрость.' },
+        { symbol: 'ᛉ', name: 'Альгиз', meaning: 'Защита, интуиция, охрана, связь с высшим.' },
+        { symbol: 'ᛋ', name: 'Соулу', meaning: 'Солнце, победа, целостность, энергия.' },
+        { symbol: 'ᛏ', name: 'Тейваз', meaning: 'Честь, справедливость, победа, мужество.' },
+        { symbol: 'ᛒ', name: 'Беркана', meaning: 'Рост, забота, семья, созидание.' },
+        { symbol: 'ᛖ', name: 'Эхваз', meaning: 'Движение, доверие, гармония, верность.' },
+        { symbol: 'ᛗ', name: 'Манназ', meaning: 'Человек, общество, разум, взаимодействие.' },
+        { symbol: 'ᛚ', name: 'Лагуз', meaning: 'Вода, интуиция, поток, эмоции, подсознание.' },
+        { symbol: 'ᛝ', name: 'Ингуз', meaning: 'Начало, потенциал, плодородие, семя.' },
+        { symbol: 'ᛟ', name: 'Отал', meaning: 'Родина, наследие, дом, корни.' },
+        { symbol: 'ᛞ', name: 'Дагаз', meaning: 'Рассвет, прорыв, трансформация, новое начало.' }
+    ];
+
+    function populateSelects() {
+        ['rune1', 'rune2', 'rune3', 'runeCenter'].forEach(id => {
+            const sel = document.getElementById(id);
+            sel.innerHTML = '';
+            runes.forEach((r, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = `${r.symbol} ${r.name}`;
+                sel.appendChild(opt);
+            });
+        });
+        document.getElementById('rune1').value = 0;
+        document.getElementById('rune2').value = 1;
+        document.getElementById('rune3').value = 3;
+        document.getElementById('runeCenter').value = 0;
+    }
+
+    function generateStavSVG(r1, r2, r3, centerRune) {
+        const svg = document.getElementById('stavSvg');
+        const ns = 'http://www.w3.org/2000/svg';
+        const cx = 250, cy = 250;
+        const radius = 175;
+        const runeRadius = 155;
+
+        svg.innerHTML = '';
+
+        const mainCircle = document.createElementNS(ns, 'circle');
+        mainCircle.setAttribute('cx', cx);
+        mainCircle.setAttribute('cy', cy);
+        mainCircle.setAttribute('r', radius);
+        mainCircle.setAttribute('fill', 'none');
+        mainCircle.setAttribute('stroke', 'rgba(201,160,80,0.35)');
+        mainCircle.setAttribute('stroke-width', '2.5');
+        svg.appendChild(mainCircle);
+
+        const innerCircle = document.createElementNS(ns, 'circle');
+        innerCircle.setAttribute('cx', cx);
+        innerCircle.setAttribute('cy', cy);
+        innerCircle.setAttribute('r', radius - 40);
+        innerCircle.setAttribute('fill', 'none');
+        innerCircle.setAttribute('stroke', 'rgba(201,160,80,0.08)');
+        innerCircle.setAttribute('stroke-width', '1.5');
+        svg.appendChild(innerCircle);
+
+        const innerCircle2 = document.createElementNS(ns, 'circle');
+        innerCircle2.setAttribute('cx', cx);
+        innerCircle2.setAttribute('cy', cy);
+        innerCircle2.setAttribute('r', radius - 40);
+        innerCircle2.setAttribute('fill', 'none');
+        innerCircle2.setAttribute('stroke', 'rgba(201,160,80,0.06)');
+        innerCircle2.setAttribute('stroke-width', '3');
+        svg.appendChild(innerCircle2);
+
+        const angles = [-90, 30, 150];
+        const runeSymbols = [r1, r2, r3];
+        const posLabels = ['', '', ''];
+
+        runeSymbols.forEach((rune, i) => {
+            const angleRad = (angles[i] * Math.PI) / 180;
+            const x = cx + runeRadius * Math.cos(angleRad);
+            const y = cy + runeRadius * Math.sin(angleRad);
+
+            const line = document.createElementNS(ns, 'line');
+            line.setAttribute('x1', cx);
+            line.setAttribute('y1', cy);
+            line.setAttribute('x2', x);
+            line.setAttribute('y2', y);
+            line.setAttribute('stroke', 'rgba(201,160,80,0.06)');
+            line.setAttribute('stroke-width', '1');
+            svg.appendChild(line);
+
+            const text = document.createElementNS(ns, 'text');
+            text.setAttribute('x', x);
+            text.setAttribute('y', y - -15);
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('font-size', '36');
+            text.setAttribute('fill', '#f0d890');
+            text.setAttribute('font-family', 'Georgia, "Times New Roman", serif');
+            text.setAttribute('font-weight', 'bold');
+            text.setAttribute('filter', 'drop-shadow(0 0 15px rgba(201,160,80,0.15))');
+            text.textContent = rune.symbol;
+            svg.appendChild(text);
+
+            const nameText = document.createElementNS(ns, 'text');
+            nameText.setAttribute('x', x);
+            nameText.setAttribute('y', y + 38);
+            nameText.setAttribute('text-anchor', 'middle');
+            nameText.setAttribute('font-size', '12');
+            nameText.setAttribute('fill', '#8a7a6a');
+            nameText.setAttribute('font-family', 'Cinzel, serif');
+            nameText.setAttribute('letter-spacing', '1');
+            nameText.textContent = rune.name;
+            svg.appendChild(nameText);
+
+            const posText = document.createElementNS(ns, 'text');
+            posText.setAttribute('x', x);
+            posText.setAttribute('y', y + 56);
+            posText.setAttribute('text-anchor', 'middle');
+            posText.setAttribute('font-size', '9');
+            posText.setAttribute('fill', '#5a4f40');
+            posText.setAttribute('font-family', 'Cinzel, serif');
+            posText.setAttribute('letter-spacing', '1.5');
+            posText.textContent = posLabels[i];
+            svg.appendChild(posText);
+        });
+
+        // Центр
+        const centerCircle = document.createElementNS(ns, 'circle');
+        centerCircle.setAttribute('cx', cx);
+        centerCircle.setAttribute('cy', cy);
+        centerCircle.setAttribute('r', '36');
+        centerCircle.setAttribute('fill', 'rgba(201,160,80,0.03)');
+        centerCircle.setAttribute('stroke', 'rgba(201,160,80,0.15)');
+        centerCircle.setAttribute('stroke-width', '1.5');
+        svg.appendChild(centerCircle);
+
+        const centerInnerCircle = document.createElementNS(ns, 'circle');
+        centerInnerCircle.setAttribute('cx', cx);
+        centerInnerCircle.setAttribute('cy', cy);
+        centerInnerCircle.setAttribute('r', '24');
+        centerInnerCircle.setAttribute('fill', 'rgba(201,160,80,0.06)');
+        centerInnerCircle.setAttribute('stroke', 'rgba(201,160,80,0.1)');
+        centerInnerCircle.setAttribute('stroke-width', '1');
+        svg.appendChild(centerInnerCircle);
+
+        const centerText = document.createElementNS(ns, 'text');
+        centerText.setAttribute('x', cx);
+        centerText.setAttribute('y', cy + 10);
+        centerText.setAttribute('text-anchor', 'middle');
+        centerText.setAttribute('font-size', '34');
+        centerText.setAttribute('fill', '#f0d890');
+        centerText.setAttribute('font-family', 'Georgia, "Times New Roman", serif');
+        centerText.setAttribute('font-weight', 'bold');
+        centerText.setAttribute('filter', 'drop-shadow(0 0 25px rgba(201,160,80,0.25))');
+        centerText.textContent = centerRune.symbol;
+        svg.appendChild(centerText);
+
+        const centerLabel = document.createElementNS(ns, 'text');
+        centerLabel.setAttribute('x', cx);
+        centerLabel.setAttribute('y', cy + 56);
+        centerLabel.setAttribute('text-anchor', 'middle');
+        centerLabel.setAttribute('font-size', '8');
+        centerLabel.setAttribute('fill', '#5a4f40');
+        centerLabel.setAttribute('font-family', 'Cinzel, serif');
+        centerLabel.setAttribute('letter-spacing', '1.5');
+        centerLabel.textContent = 'ИСТОЧНИК';
+        svg.appendChild(centerLabel);
+
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * 360;
+            const rad = (angle * Math.PI) / 180;
+            const r = 44;
+            const dot = document.createElementNS(ns, 'circle');
+            dot.setAttribute('cx', cx + r * Math.cos(rad));
+            dot.setAttribute('cy', cy + r * Math.sin(rad));
+            dot.setAttribute('r', '1.5');
+            dot.setAttribute('fill', 'rgba(201,160,80,0.12)');
+            svg.appendChild(dot);
+        }
+
+        for (let i = 0; i < 24; i++) {
+            const angle = (i / 24) * 360;
+            const rad = (angle * Math.PI) / 180;
+            const r = radius + 8;
+            const dot = document.createElementNS(ns, 'circle');
+            dot.setAttribute('cx', cx + r * Math.cos(rad));
+            dot.setAttribute('cy', cy + r * Math.sin(rad));
+            dot.setAttribute('r', '1.2');
+            dot.setAttribute('fill', 'rgba(201,160,80,0.08)');
+            svg.appendChild(dot);
+        }
+
+        const defs = document.createElementNS(ns, 'defs');
+        const gradient = document.createElementNS(ns, 'radialGradient');
+        gradient.setAttribute('id', 'glowGradient');
+        gradient.setAttribute('cx', '50%');
+        gradient.setAttribute('cy', '50%');
+        gradient.setAttribute('r', '50%');
+        const stop1 = document.createElementNS(ns, 'stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('style', 'stop-color:#c9a050;stop-opacity:1');
+        gradient.appendChild(stop1);
+        const stop2 = document.createElementNS(ns, 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('style', 'stop-color:#c9a050;stop-opacity:0');
+        gradient.appendChild(stop2);
+        defs.appendChild(gradient);
+        svg.appendChild(defs);
+
+        const glow = document.createElementNS(ns, 'circle');
+        glow.setAttribute('cx', cx);
+        glow.setAttribute('cy', cy);
+        glow.setAttribute('r', radius + 35);
+        glow.setAttribute('fill', 'url(#glowGradient)');
+        glow.setAttribute('opacity', '0.1');
+        svg.appendChild(glow);
+    }
+
+    function getStavInterpretation(r1, r2, r3, center) {
+        const combinations = [
+            { key: ['ᚠ','ᚢ','ᚨ'], title: 'Путь Силы', purpose: 'Найди свой путь и следуй ему.',
+              desc: 'Этот став соединяет энергию созидания (Феху), мощь (Уруз) и мудрость (Ансуз).' },
+            { key: ['ᚦ','ᛉ','ᛏ'], title: 'Непобедимый щит', purpose: 'Ты под защитой.',
+              desc: 'Турисаз ставит барьер, Альгиз усиливает интуицию, Тейваз добавляет мужество.' },
+            { key: ['ᚲ','ᛝ','ᛞ'], title: 'Творение', purpose: 'Ты создаёшь будущее.',
+              desc: 'Кеназ зажигает огонь вдохновения, Ингуз даёт потенциал для роста, Дагаз открывает новый рассвет.' },
+            { key: ['ᛏ','ᚲ','ᛋ'], title: 'Пламя победы', purpose: 'Сожги все преграды.',
+              desc: 'Тейваз несёт честь и победу, Кеназ — творческую энергию, Соулу — солнечный свет.' },
+            { key: ['ᚨ','ᛉ','ᛞ'], title: 'Просветление', purpose: 'Открой глаза на истину.',
+              desc: 'Ансуз даёт мудрость, Альгиз — интуицию, Дагаз — прозрение.' },
+            { key: ['ᛒ','ᛚ','ᛝ'], title: 'Семя жизни', purpose: 'Всё лучшее ещё впереди.',
+              desc: 'Беркана символизирует рост и заботу, Лагуз — поток жизни, Ингуз — семя будущего.' },
+            { key: ['ᛗ','ᚨ','ᛚ'], title: 'Мудрость', purpose: 'Знание — твоя сила.',
+              desc: 'Манназ — взаимодействие с людьми, Ансуз — мудрость, Лагуз — интуиция.' },
+            { key: ['ᛇ','ᛉ','ᛟ'], title: 'Корни', purpose: 'Ты часть великого рода.',
+              desc: 'Эйваз — связь с предками, Альгиз — защита, Отал — корни.' },
+            { key: ['ᚷ','ᚨ','ᛗ'], title: 'Союз', purpose: 'Вместе мы сила.',
+              desc: 'Гебо — партнёрство, Ансуз — мудрость, Манназ — общение.' },
+            { key: ['ᚠ','ᛝ','ᛟ'], title: 'Наследие', purpose: 'Создай что-то вечное.',
+              desc: 'Феху — созидание, Ингуз — начало, Отал — наследие.' },
+            { key: ['ᚱ','ᛋ','ᛏ'], title: 'Путь воина', purpose: 'Иди до конца.',
+              desc: 'Райдо — путь, Соулу — победа, Тейваз — честь.' },
+            { key: ['ᚺ','ᛞ','ᛋ'], title: 'Перерождение', purpose: 'После тьмы всегда свет.',
+              desc: 'Хагалаз разрушает старое, Дагаз открывает новый день, Соулу приносит свет.' }
+        ];
+
+        const key = [r1.symbol, r2.symbol, r3.symbol];
+        let found = null;
+        for (let c of combinations) {
+            if (c.key[0] === key[0] && c.key[1] === key[1] && c.key[2] === key[2]) {
+                found = c;
+                break;
+            }
+        }
+
+        if (!found) {
+            found = {
+                title: `${r1.name} + ${r2.name} + ${r3.name}`,
+                purpose: `${r1.meaning.split(',')[0]}, ${r2.meaning.split(',')[0]}, ${r3.meaning.split(',')[0]}.`,
+                desc: `Этот став объединяет три силы: ${r1.name}, ${r2.name} и ${r3.name}.`
+            };
+        }
+
+        found.desc += ` В центре става находится ${center.name} (${center.symbol}) — источник энергии, который питает и усиливает весь став.`;
+
+        return found;
+    }
+
+    function buildStav() {
+        const idx1 = parseInt(document.getElementById('rune1').value);
+        const idx2 = parseInt(document.getElementById('rune2').value);
+        const idx3 = parseInt(document.getElementById('rune3').value);
+        const idxCenter = parseInt(document.getElementById('runeCenter').value);
+
+        const r1 = runes[idx1];
+        const r2 = runes[idx2];
+        const r3 = runes[idx3];
+        const center = runes[idxCenter];
+
+        generateStavSVG(r1, r2, r3, center);
+
+        const info = getStavInterpretation(r1, r2, r3, center);
+        document.getElementById('stavTitle').textContent = `Став «${info.title}»`;
+        document.getElementById('stavPurpose').textContent = `«${info.purpose}»`;
+
+        const cards = document.getElementById('stavRunes');
+        cards.innerHTML = `
+            <div class="rune-card">
+                <span class="symbol">${r1.symbol}</span>
+                <div class="name">${r1.name}</div>
+                <div class="position">✦ Основа</div>
+                <div class="meaning">${r1.meaning}</div>
+            </div>
+            <div class="rune-card">
+                <span class="symbol">${r2.symbol}</span>
+                <div class="name">${r2.name}</div>
+                <div class="position">✦ Действие</div>
+                <div class="meaning">${r2.meaning}</div>
+            </div>
+            <div class="rune-card">
+                <span class="symbol">${r3.symbol}</span>
+                <div class="name">${r3.name}</div>
+                <div class="position">✦ Итог</div>
+                <div class="meaning">${r3.meaning}</div>
+            </div>
+        `;
+
+        document.getElementById('stavFormula').textContent = `${r1.symbol} + ${r2.symbol} + ${r3.symbol}  (центр: ${center.symbol})`;
+        document.getElementById('stavDesc').textContent = info.desc;
+
+        const result = document.getElementById('result');
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    populateSelects();
+    document.getElementById('calcBtn').addEventListener('click', buildStav);
+    window.addEventListener('load', buildStav);
+
+    // ============================================================
+    // ===== СКАЧИВАНИЕ СТАВА В PNG =====
+    // ============================================================
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const svg = document.getElementById('stavSvg');
+        
+        const clone = svg.cloneNode(true);
+        const ns = 'http://www.w3.org/2000/svg';
+        const rect = document.createElementNS(ns, 'rect');
+        rect.setAttribute('x', '0');
+        rect.setAttribute('y', '0');
+        rect.setAttribute('width', '500');
+        rect.setAttribute('height', '500');
+        rect.setAttribute('fill', '#0d0d1a');
+        rect.setAttribute('rx', '16');
+        clone.insertBefore(rect, clone.firstChild);
+        
+        const serializer = new XMLSerializer();
+        let svgString = serializer.serializeToString(clone);
+        svgString = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgString;
+        
+        const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 500;
+            canvas.height = 500;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, 500, 500);
+            const pngUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'runic-stav.png';
+            link.href = pngUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        };
+        img.onerror = function() {
+            alert('Ошибка при создании изображения. Попробуйте снова.');
+        };
+        img.src = url;
+    });
+</script>
+
+</body>
+</html>

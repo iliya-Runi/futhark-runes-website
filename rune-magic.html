@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Руническая магия: обереги, круги и сакральная геометрия</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%23c9a050' stroke-width='3'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%23c9a050' font-weight='bold' font-family='serif'>ᚨ</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+          nav {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 16px;
+            width: 100%;
+        }
+
+        .nav-row-left {
+            justify-content: flex-start;
+        }
+
+        .nav-row-right {
+            justify-content: flex-end;
+        }
+
+        nav a {
+            color: #b8ab9a;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1.2px;
+            transition: 0.3s;
+            border-bottom: 2px solid transparent;
+            padding: 6px 10px 4px 10px;
+            position: relative;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #c9a050;
+            border-bottom-color: #c9a050;
+        }
+
+        /* ===== ВЫДЕЛЕННЫЕ КНОПКИ В МЕНЮ ===== */
+        .support-link {
+            color: #c9a050 !important;
+            border-bottom-color: rgba(201, 160, 80, 0.3) !important;
+        }
+
+        .support-link:hover {
+            color: #f0d890 !important;
+            border-bottom-color: #c9a050 !important;
+        }
+
+        /* ===== ВЫДЕЛЕННЫЕ КНОПКИ В МЕНЮ ===== */
+        .support-link {
+            color: #c9a050 !important;
+            border-bottom-color: rgba(201, 160, 80, 0.3) !important;
+        }
+
+        .support-link:hover {
+            color: #f0d890 !important;
+            border-bottom-color: #c9a050 !important;
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #c9a050;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8a7a6a;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .section {
+            background: rgba(20, 20, 35, 0.4);
+            border: 1px solid rgba(201, 160, 80, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #c9a050;
+            font-size: 24px;
+            letter-spacing: 3px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section h2 .rune-icon {
+            font-size: 32px;
+            color: #c9a050;
+        }
+        .section p {
+            color: #b8ab9a;
+            font-size: 16px;
+            line-height: 1.9;
+            font-family: 'Georgia', serif;
+            margin-bottom: 14px;
+        }
+        .section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .section ul li {
+            color: #b8ab9a;
+            font-size: 15px;
+            line-height: 1.8;
+            padding: 8px 0 8px 28px;
+            position: relative;
+            font-family: 'Georgia', serif;
+            border-bottom: 1px solid rgba(201, 160, 80, 0.04);
+        }
+        .section ul li::before {
+            content: "✦";
+            color: #c9a050;
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+        }
+
+        .highlight-box {
+            background: rgba(201, 160, 80, 0.06);
+            border-left: 4px solid #c9a050;
+            padding: 18px 22px;
+            border-radius: 0 12px 12px 0;
+            margin: 18px 0;
+        }
+        .highlight-box strong {
+            color: #c9a050;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .step-card {
+            background: rgba(13, 13, 26, 0.5);
+            border: 1px solid rgba(201, 160, 80, 0.06);
+            border-radius: 12px;
+            padding: 18px 16px;
+        }
+        .step-card .step-num {
+            display: inline-block;
+            background: rgba(201, 160, 80, 0.12);
+            color: #c9a050;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .step-card h4 {
+            color: #e8ddd0;
+            font-size: 17px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .step-card p {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .rune-circle-explained {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .rune-circle-explained .circle-diagram {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid rgba(201, 160, 80, 0.2);
+            position: relative;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13, 13, 26, 0.3);
+        }
+        .rune-circle-explained .circle-diagram .center-text {
+            font-size: 18px;
+            color: #c9a050;
+            opacity: 0.5;
+            text-align: center;
+        }
+        .rune-circle-explained .circle-diagram .ring-label {
+            position: absolute;
+            font-size: 11px;
+            color: #6a5f50;
+            letter-spacing: 1px;
+        }
+        .rune-circle-explained .circle-diagram .ring-label.top { top: -10px; left: 50%; transform: translateX(-50%); }
+        .rune-circle-explained .circle-diagram .ring-label.bottom { bottom: -10px; left: 50%; transform: translateX(-50%); }
+
+        .warning-box {
+            background: rgba(180, 50, 50, 0.08);
+            border: 1px solid rgba(180, 50, 50, 0.15);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 18px 0;
+        }
+        .warning-box strong {
+            color: #c9a050;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(201, 160, 80, 0.1);
+            text-align: center;
+            color: #6a5f50;
+            font-size: 13px;
+        }
+        footer a {
+            color: #8a7a6a;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #c9a050;
+        }
+
+       
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ===== ШАПКА С МЕНЮ В ДВА РЯДА ===== -->
+    <header>
+        <div class="logo">
+            ᛝᚲᚷᛉᚠᚨᚱ
+            <span>Старший Футарк · 24 руны</span>
+        </div>
+        <!-- ===== НАВИГАЦИЯ В ДВА РЯДА ===== -->
+        <nav>
+            <!-- ПЕРВЫЙ РЯД: Основные разделы (по левому краю) -->
+            <div class="nav-row nav-row-left">
+                <a href="index.html" class="main-link">
+                    Главная
+                    <span class="tooltip">
+                        <span class="rune-icon">ᚱ</span>
+                        <span class="highlight">Вернуться на главную</span><br>
+                        Главная страница с руническим кругом
+                    </span>
+                </a>
+                <a href="runes.html" class="runes-link">
+                    Руны Футарха
+                    <span class="tooltip">
+                        <span class="rune-icon">ᚠ</span>
+                        <span class="highlight">Все 24 руны Футарка</span><br>
+                        Значения, символы и атты
+                    </span>
+                </a>
+                <a href="rune-horoscope.html" class="horoscope-link">
+                    Рунический гороскоп
+                    <span class="tooltip">
+                        <span class="rune-icon">ᛃ</span>
+                        <span class="highlight">Рунический гороскоп</span><br>
+                        Предсказание по дате рождения
+                    </span>
+                </a>
+                <a href="rune-divination.html" class="divination-link">
+                    Гадание на рунах
+                    <span class="tooltip">
+                        <span class="rune-icon">ᛉ</span>
+                        <span class="highlight">Онлайн-гадание на рунах</span><br>
+                        Брось руны и узнай судьбу
+                    </span>
+                </a>
+                <a href="rune-magic.html" class="divination-link active">
+                    Магия
+                    <span class="tooltip">
+                        <span class="rune-icon">ᛈ</span>
+                        <span class="highlight">Руководство по созданию оберегов</span><br>
+                        Пошаговая инструкция с предостережением
+                    </span>
+                </a>
+                <a href="gods.html" class="gods-link">
+                    Асы Боги Скандинавии
+                    <span class="tooltip">
+                        <span class="rune-icon">ᚨ</span>
+                        <span class="highlight">Скандинавские боги</span><br>
+                        Один, Тор, Локи, Фрейя и другие
+                    </span>
+                </a>
+                <a href="mifolgi.html" class="myth-link">
+                    Скандинавская мифология
+                    <span class="tooltip">
+                        <span class="rune-icon">ᛝ</span>
+                        <span class="highlight">Подробная страница</span><br>
+                        Девять миров, руны и боги
+                    </span>
+                </a>
+                <a href="about.html" class="about-link">
+                    О сайте
+                    <span class="tooltip">
+                        <span class="rune-icon">ᛉ</span>
+                        <span class="highlight">О проекте</span><br>
+                        Создатель, цели и поддержка
+                    </span>
+                </a>
+            </div>
+
+            <!-- ВТОРОЙ РЯД: Консультация, Обратная связь, Поддержка (прижаты к правому краю) -->
+            <div class="nav-row nav-row-right">
+                <a href="feedback.html" class="feedback-link">
+                    📧 Обратная связь с поддержкой
+                    <span class="tooltip">
+                        <span class="rune-icon">ᚨ</span>
+                        <span class="highlight">Написать разработчику сайта</span><br>
+                        Вопросы, идеи и поддержка
+                    </span>
+                </a>
+                <a href="consultation.html" class="support-link" style="color: #c9a050; border-bottom-color: rgba(201,160,80,0.3);">
+                    ✈️ Консультация рунолога
+                    <span class="tooltip">
+                        <span class="rune-icon">ᚨ</span>
+                        <span class="highlight">Консультация рунолога</span><br>
+                        Помощь в вопросах жизни и судьбы
+                    </span>
+                </a>
+                <a href="support.html" class="support-link" style="color: #c9a050; border-bottom-color: rgba(201,160,80,0.3);">
+                    ₽ Финансовая поддержка сайта
+                    <span class="tooltip">
+                        <span class="rune-icon">ᛉ</span>
+                        <span class="highlight">Поддержать создателя</span><br>
+                        Финансовая поддержка, информация об авторе
+                    </span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== ЗАГОЛОВОК ===== -->
+    <h1>✦ Руническая магия ✦</h1>
+    <p class="subtitle">Обереги, магические круги и сакральный смысл рунического круга</p>
+
+    <!-- ===== ВСТУПЛЕНИЕ ===== -->
+    <div class="section">
+        <h2><span class="rune-icon">ᚨ</span> Что такое руническая магия</h2>
+        <p>
+            Руническая магия — это древняя практика использования рун как инструментов изменения реальности. 
+            Скандинавские народы верили, что руны — это не просто алфавит, а <strong>живые силы</strong>, 
+            которые можно призвать для защиты, исцеления, привлечения удачи и познания судьбы.
+        </p>
+        <p>
+            На этой странице мы разберём, как создавать рунические обереги, чертить магические круги 
+            и что означает сам рунический круг — одна из главных сакральных форм в рунической традиции.
+        </p>
+    </div>
+
+    <!-- ===== СМЫСЛ РУНИЧЕСКОГО КРУГА ===== -->
+    <div class="section">
+        <h2><span class="rune-icon">ᛉ</span> Смысл рунического круга</h2>
+        <p>
+            <strong>Рунический круг</strong> — это не просто красивое расположение рун по кругу. 
+            Это глубокая сакральная геометрия, отражающая устройство мироздания.
+        </p>
+        
+        <div class="rune-circle-explained">
+            <div class="circle-diagram">
+                <div class="center-text">ᚷ<br><small>центр</small></div>
+                <span class="ring-label top">✦ небо</span>
+                <span class="ring-label bottom">✦ земля</span>
+            </div>
+            <p style="text-align:center; font-size:14px; color:#6a5f50; max-width:500px;">
+                Круг служит барьером, который отражает негативную энергию и защищает от внешних ментальных ударов
+            </p>
+        </div>
+
+        <p>
+            Когда мы располагаем руны по кругу, мы создаём <strong>энергетический портал</strong>, 
+            который соединяет эти три уровня. Вращение круга символизирует вечное движение энергии — 
+            от рождения к смерти и к новому рождению на конце круга всегда должна стаять руна дагаз ее смысл замкнуть цикл для протекания енергии.
+        </p>
+        <p>
+            Именно поэтому рунический круг используется в магии: он создаёт защищённое пространство, 
+            где силы мира могут взаимодействовать с волей мага.
+        </p>
+    </div>
+
+    <!-- ===== КАК СОЗДАТЬ РУНИЧЕСКИЙ ОБЕРЕГ ===== -->
+    <div class="section">
+        <h2><span class="rune-icon">ᛟ</span> Как создать рунический оберег</h2>
+        <p>
+            Рунический оберег — это предмет, кольцо, медальен, браслет, возвращаяс к смыслу круга на который нанесены одна или несколько рун с определённой целью. 
+            Он работает как <strong>энергетический щит</strong> или <strong>канал для привлечения</strong> нужной силы благополучие, удача.
+        </p>
+
+        <div class="step-grid">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h4>Определи цель</h4>
+                <p>Что ты хочешь привлечь или от чего защититься? От этого зависит выбор рун.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h4>Выбери руны</h4>
+                <p>Подбери 1–3 руны, которые соответствуют твоей цели (см. список рун на сайте).</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h4>Выбери материал</h4>
+                <p>Дерево, камень, металл (серебро, золото) считаются магическими металлами. Важно, чтобы материал был подобран правильно.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h4>Нанеси руны</h4>
+                <p>Вырежь, выжги или нарисуй руны. Делай это в спокойном состоянии, думая о цели.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">5</div>
+                <h4>Активируй оберег</h4>
+                <p>Подержи в руках, подыши на него, произнеси вслух своё намерение. Можно окропить водой или окурить дымом, поддержать над пламенем свечи прокрутив три раза по часовой</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">6</div>
+                <h4>Носи с собой</h4>
+                <p>Оберег работает, когда он рядом с тобой. Можно носить на шее, надеть на палец, в кармане или положить под подушку.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🔥 Примеры оберегов:</strong>
+            <ul style="margin-top:10px;">
+                <li><strong>ᚨ + ᛉ</strong> — защита и мудрость (для общения и принятия решений).</li>
+                <li><strong>ᚠ + ᛃ</strong> — привлечение достатка и успеха в делах при условии упорного труда.</li>
+                <li><strong>ᛏ + ᛋ</strong> — победа, сила воли и уверенность важно быть верным своему слову.</li>
+                <li><strong>ᛒ + ᛚ</strong> — гармония в семье, забота и интуиция.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===== МАГИЧЕСКИЙ КРУГ ===== -->
+    <div class="section">
+        <h2><span class="rune-icon">ᛝ</span> Как чертить магический круг</h2>
+        <p>
+            <strong>Магический круг</strong> — это защитное пространство, которое создаётся для проведения ритуалов. 
+            Он отделяет мага от внешнего мира и концентрирует энергию внутри.
+        </p>
+
+        <h3 style="color:#c9a050; font-size:18px; letter-spacing:2px; margin:15px 0 10px;">📐 Пошаговая инструкция:</h3>
+        <ul>
+            <li><strong>Выбери место:</strong> тихое, где тебя не побеспокоят.</li>
+            <li><strong>Очисти пространство:</strong> можно окурить травами (шалфей, можжевельник) или обойти с колокольчиком.</li>
+            <li><strong>Начерти круг:</strong> можно маркером, карандашом, шариковой ручкой вырезать на дощечке.</li>
+            <li><strong>Нанеси руны по часовой:</strong> прямо как на главной странице и замкнуть руны с двух сторон ободом.</li>
+            <li><strong>Призови силы:</strong> произнеси краткое твердое намеренье обращение к рунам или богам, чтобы они наполнили круг своей силой.</li>
+            <li><strong>Проведи ритуал:</strong> внутри круга ты в безопасности.</li>
+        </ul>
+
+        <div class="warning-box">
+            <strong>⚠️ Важно:</strong> Всегда закрывай магический круг после работы. 
+            Открытый круг — как открытая дверь, через которую могут проникнуть незваные энергии.
+            Что бы закрыть круг или руническую формулу отпусти руны с благодарность порви или ссожги листок.
+        </div>
+    </div>
+
+    <!-- ===== ПРЕДОСТЕРЕЖЕНИЯ ===== -->
+    <div class="section">
+        <h2><span class="rune-icon">ᚦ</span> Правила безопасности</h2>
+        <p>
+            Руническая магия — это работа с силой. Она требует уважения и осознанности.
+        </p>
+        <ul>
+            <li><strong>Не наноси руны на тело без понимания особенно татуировки</strong> — некоторые руны могут быть опасны для здоровья.</li>
+            <li><strong>Не используй руны для вреда</strong> — любое негативное воздействие вернётся к тебе же.</li>
+            <li><strong>Не смешивай руны без знаний</strong> — комбинации могут создавать непредсказуемый эффект.</li>
+            <li><strong>Не делай оберег в плохом настроении</strong> — твои эмоции "запишутся" в предмет.</li>
+            <li><strong>Уважай руны</strong> — это не просто буквы, это древние силы.</li>
+        </ul>
+        <div class="highlight-box">
+            <strong>Запомни:</strong> Руны — это инструмент, а сила всегда идёт от тебя. Будь честен с собой и с миром, и руны ответят тебе тем же.
+        </div>
+    </div>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer>
+        <p>ᛝᚲᚷᛉᚠᚨᚱ · Руны Старшего Футарка</p>
+        <p style="margin-top:8px; font-size:12px;">
+            <a href="index.html">Главная</a> · 
+            <a href="runes.html">Руны</a> · 
+            <a href="about.html">О сайте</a>
+        </p>
+        <p style="margin-top:12px; font-size:11px; opacity:0.7;">© 2026 · Сделано с душой и мудростью</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
